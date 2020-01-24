@@ -1,7 +1,8 @@
 <?php
 
 Route::get('validate_emails', function() {
-    return 'Validate Emails';
+    return view('willstickles\laravelneutrino::neutrino.validate_email');
+    // return "Hello World";
 });
 Route::get('get_credit_balance', function() {
     return 'Get Credit Balance';

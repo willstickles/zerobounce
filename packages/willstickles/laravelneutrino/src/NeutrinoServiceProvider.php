@@ -28,10 +28,12 @@ class NeutrinoServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        require __DIR__ . '/routes/routes.php';
-
         $this->publishes([
             __DIR__.'/config/neutrino.php' => config_path('neutrino.php'),
+            __DIR__.'/components' => resource_path('js/components')
         ]);
+        $this->loadRoutesFrom( __DIR__.'/routes/web.php');
+        $this->loadViewsFrom( __DIR__.'/views', 'willstickles\laravelneutrino');
+
     }
 }

@@ -29,9 +29,17 @@ class NeutrinoServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/config/neutrino.php' => config_path('neutrino.php'),
-            __DIR__.'/components' => resource_path('js/components')
+            __DIR__.'/config/neutrino.php' => config_path('neutrino.php')
         ]);
+
+        $this->publishes([
+            __DIR__.'/js/components' => resource_path('js/components')
+        ], 'vue-components');
+
+        $this->publishes([
+            __DIR__.'/js/app.js' => resource_path('js')
+        ]);
+
         $this->loadRoutesFrom( __DIR__.'/routes/web.php');
         $this->loadViewsFrom( __DIR__.'/views', 'willstickles\laravelneutrino');
 

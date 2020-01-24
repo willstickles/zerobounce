@@ -17,6 +17,8 @@ class NeutrinoServiceProvider extends ServiceProvider
         $this->app->bind('willstickles-neutrino', function() {
             return new Neutrino();
         });
+
+        $this->mergeConfigFrom( __DIR__.'/config/neutrino.php', 'neutrino');
     }
 
     /**
@@ -27,5 +29,9 @@ class NeutrinoServiceProvider extends ServiceProvider
     public function boot()
     {
         require __DIR__ . '/routes/routes.php';
+
+        $this->publishes([
+            __DIR__.'/config/neutrino.php' => config_path('neutrino.php'),
+        ]);
     }
 }

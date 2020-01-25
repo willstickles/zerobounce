@@ -27,7 +27,11 @@ class NeutrinoController extends Controller
      *
      * @return void
      */
-    public function validateEmail(Response $response) {
+    public function submit(Response $response) {
+
+        echo "HEre";
+
+
         return response()->json($response);
     }
 }

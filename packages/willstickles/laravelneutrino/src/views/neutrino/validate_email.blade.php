@@ -13,8 +13,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    <email_validation-view></email_validation-view>
+                    <email-validation></email-validation>
                 </div>
             </div>
         </div>

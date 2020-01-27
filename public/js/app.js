@@ -1932,6 +1932,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1944,39 +1945,79 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    submit: function submit() {
+    validateForm: function validateForm(e) {
       var _this = this;
 
-      // console.log(window.Laravel.csrfToken);
-      this.loading = true;
-      this.showform = false;
-      this.errors = {};
-      var url = 'https://api.zerobounce.net/v2/validate';
-      axios.get(url, {
-        params: {
-          api_key: 'a870019d9b8f4297bafd5cec33f859e6',
-          email: this.email,
-          ip_address: ''
-        },
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest' // 'X-CSRF-TOKEN': window.Laravel.csrfToken
+      if (this.email) {
+        // return true;
+        this.loading = true;
+        this.showform = false;
+        this.errors = {};
+        var url = 'https://api.zerobounce.net/v2/validate';
+        axios.get(url, {
+          params: {
+            api_key: 'a870019d9b8f4297bafd5cec33f859e6',
+            email: this.email,
+            ip_address: ''
+          },
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'allowed_headers': ['*'],
+            'X-CSRF-TOKEN': window.Laravel.csrfToken
+          }
+        }).then(function (response) {
+          _this.info = response.data;
+          console.log('success');
+          console.log(_this.info);
+        })["catch"](function (error) {
+          _this.errored = true;
+        })["finally"](function () {
+          return _this.loading = false;
+        });
+      }
 
-        },
-        withCredentials: true,
-        credentials: 'same-origin'
-      }).then(function (response) {
-        _this.info = response.data;
-        console.log('success');
-        console.log(_this.info);
-      })["catch"](function (error) {
-        console.log(_this.email);
-        console.log('error');
-        console.log(error);
-        _this.errored = true;
-      })["finally"](function () {
-        return _this.loading = false;
-      });
-    }
+      this.errors = [];
+
+      if (!this.email) {
+        this.errors.push('Email required');
+      }
+
+      e.preventDefault();
+    } // submit() {
+    //     // console.log(window.Laravel.csrfToken);
+    //     this.loading = true;
+    //     this.showform = false;
+    //     this.errors = {};
+    //     var url = 'https://api.zerobounce.net/v2/validate';
+    //     axios
+    //     .get(url, {     
+    //         params: {
+    //             api_key: 'a870019d9b8f4297bafd5cec33f859e6',
+    //             email: this.email,
+    //             ip_address: '',
+    //         },
+    //         headers: {
+    //             'X-Requested-With': 'XMLHttpRequest',
+    //             'allowed_headers': ['*'],
+    //             'X-CSRF-TOKEN': window.Laravel.csrfToken
+    //         },
+    //         // withCredentials: true,
+    //         // credentials: 'same-origin',
+    //     })
+    //     .then( response => {
+    //         this.info = response.data
+    //         console.log('success');
+    //         console.log(this.info);
+    //     })
+    //     .catch( error => {
+    //         console.log(this.email);
+    //         console.log('error');
+    //         console.log(error);
+    //         this.errored = true;
+    //     })
+    //     .finally( () => this.loading = false )
+    // }
+
   }
 });
 
@@ -37373,13 +37414,13 @@ var render = function() {
               on: {
                 submit: function($event) {
                   $event.preventDefault()
-                  return _vm.submit($event)
+                  return _vm.validateForm($event)
                 }
               }
             },
             [
               _c("div", { staticClass: "form-group" }, [
-                _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                _c("label", { attrs: { for: "inputEmail" } }, [
                   _vm._v("Email address")
                 ]),
                 _vm._v(" "),
@@ -37395,7 +37436,7 @@ var render = function() {
                   staticClass: "form-control",
                   attrs: {
                     type: "email",
-                    id: "exampleInputEmail1",
+                    id: "inputEmail",
                     "aria-describedby": "emailHelp",
                     placeholder: "Enter email to validate"
                   },
@@ -37408,7 +37449,13 @@ var render = function() {
                       _vm.email = $event.target.value
                     }
                   }
-                })
+                }),
+                _vm._v(" "),
+                this.errors.length
+                  ? _c("div", { staticClass: "alert alert-danger" }, [
+                      _vm._v(_vm._s(this.errors))
+                    ])
+                  : _vm._e()
               ]),
               _vm._v(" "),
               _c(

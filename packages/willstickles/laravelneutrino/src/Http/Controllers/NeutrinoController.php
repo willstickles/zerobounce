@@ -3,7 +3,7 @@
 namespace Willstickles\LaravelNeutrino\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
 
 class NeutrinoController extends Controller
 {
@@ -16,6 +16,8 @@ class NeutrinoController extends Controller
      */
     public function index()
     {
+        $value = $value = Cache::store('file')->get('path');
+
         return view('willstickles\laravelneutrino::neutrino.validate_email');
     }
 
@@ -27,11 +29,12 @@ class NeutrinoController extends Controller
      *
      * @return void
      */
-    public function submit(Response $response) {
+    public function submit(Request $request) 
+    {
+        $this->validate($request, [
+            'email' => 'required|email'
+        ]);
 
-        echo "HEre";
-
-
-        return response()->json($response);
+        return response()->json(null, 200);
     }
 }

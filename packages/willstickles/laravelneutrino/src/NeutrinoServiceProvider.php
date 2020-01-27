@@ -30,7 +30,7 @@ class NeutrinoServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/config/neutrino.php' => config_path('neutrino.php')
-        ]);
+        ], 'neutrino-config');
 
         $this->publishes([
             __DIR__.'/js/components' => resource_path('js/components')
@@ -38,7 +38,7 @@ class NeutrinoServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/js/app.js' => resource_path('js')
-        ]);
+        ], 'neutrino-js');
 
         $this->loadRoutesFrom( __DIR__.'/routes/web.php');
         $this->loadViewsFrom( __DIR__.'/views', 'willstickles\laravelneutrino');

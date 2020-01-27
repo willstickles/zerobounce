@@ -2,7 +2,6 @@
 
 use Willstickles\LaravelNeutrino\Http\Controllers\NeutrinoController;
 
-
 Route::group(['namespace' => 'Willstickles\LaravelNeutrino\Http\Controllers', 'middleware' => ['cors']], function() {
     Route::get('validate_emails', 'NeutrinoController@index')->name('validate_emails');
     Route::get('validate_email', 'NeutrinoController@validateEmail')->name('validate_email');

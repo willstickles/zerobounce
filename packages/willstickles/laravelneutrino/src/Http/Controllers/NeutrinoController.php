@@ -31,6 +31,8 @@ class NeutrinoController extends Controller
      */
     public function submit(Request $request) 
     {
+        dd($request);
+
         $this->validate($request, [
             'email' => 'required|email'
         ]);

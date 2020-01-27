@@ -6,6 +6,8 @@ Route::group(['namespace' => 'Willstickles\LaravelNeutrino\Http\Controllers', 'm
     Route::get('validate_emails', 'NeutrinoController@index')->name('validate_emails');
     Route::get('validate_email', 'NeutrinoController@validateEmail')->name('validate_email');
 
+    Route::get('/submit', 'NeutrinoController@submit');
+
     Route::get('get_credit_balance', function() {
         return 'Get Credit Balance';
     });

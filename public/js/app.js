@@ -1933,15 +1933,96 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       errors: {},
       email: '',
-      info: null,
+      infolist: null,
       loading: false,
       errored: false,
-      showform: true
+      showform: true,
+      success: false
     };
   },
   methods: {
@@ -1952,27 +2033,18 @@ __webpack_require__.r(__webpack_exports__);
         // return true;
         this.loading = true;
         this.showform = false;
+        this.success = false;
         this.errors = {};
+        var apiUrl = 'https://api.zerobounce.net/v2/validate?api_key=a870019d9b8f4297bafd5cec33f859e6';
         var url = 'https://api.zerobounce.net/v2/validate';
-        axios.get(url, {
-          params: {
-            api_key: 'a870019d9b8f4297bafd5cec33f859e6',
-            email: this.email,
-            ip_address: ''
-          },
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'allowed_headers': ['*'],
-            'X-CSRF-TOKEN': window.Laravel.csrfToken
-          }
-        }).then(function (response) {
-          _this.info = response.data;
-          console.log('success');
-          console.log(_this.info);
+        fetch(apiUrl + '&email=' + encodeURIComponent(this.email) + '&ip_address=').then(function (res) {
+          return res.json();
+        }).then(function (data) {
+          _this.infolist = data;
         })["catch"](function (error) {
           _this.errored = true;
         })["finally"](function () {
-          return _this.loading = false;
+          _this.loading = false, _this.success = true;
         });
       }
 
@@ -1983,41 +2055,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       e.preventDefault();
-    } // submit() {
-    //     // console.log(window.Laravel.csrfToken);
-    //     this.loading = true;
-    //     this.showform = false;
-    //     this.errors = {};
-    //     var url = 'https://api.zerobounce.net/v2/validate';
-    //     axios
-    //     .get(url, {     
-    //         params: {
-    //             api_key: 'a870019d9b8f4297bafd5cec33f859e6',
-    //             email: this.email,
-    //             ip_address: '',
-    //         },
-    //         headers: {
-    //             'X-Requested-With': 'XMLHttpRequest',
-    //             'allowed_headers': ['*'],
-    //             'X-CSRF-TOKEN': window.Laravel.csrfToken
-    //         },
-    //         // withCredentials: true,
-    //         // credentials: 'same-origin',
-    //     })
-    //     .then( response => {
-    //         this.info = response.data
-    //         console.log('success');
-    //         console.log(this.info);
-    //     })
-    //     .catch( error => {
-    //         console.log(this.email);
-    //         console.log('error');
-    //         console.log(error);
-    //         this.errored = true;
-    //     })
-    //     .finally( () => this.loading = false )
-    // }
-
+    }
   }
 });
 
@@ -37411,12 +37449,8 @@ var render = function() {
           _c(
             "form",
             {
-              on: {
-                submit: function($event) {
-                  $event.preventDefault()
-                  return _vm.validateForm($event)
-                }
-              }
+              attrs: { action: "/submit", method: "get" },
+              on: { submit: _vm.validateForm }
             },
             [
               _c("div", { staticClass: "form-group" }, [
@@ -37465,6 +37499,160 @@ var render = function() {
               )
             ]
           )
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.success
+      ? _c("div", [
+          _c("div", [
+            _vm._v(
+              "\n            Email Address: " +
+                _vm._s(_vm.infolist.address) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           Status: " +
+                _vm._s(_vm.infolist.status) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           Sub Status: " +
+                _vm._s(_vm.infolist.sub_status) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           Free Email: " +
+                _vm._s(_vm.infolist.free_email) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           Did You Mean: " +
+                _vm._s(_vm.infolist.did_you_mean) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           Account Name: " +
+                _vm._s(_vm.infolist.account) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           Domain Name: " +
+                _vm._s(_vm.infolist.domain) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           Domain Age: " +
+                _vm._s(_vm.infolist.domain_age_days) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           SMTP Provider: " +
+                _vm._s(_vm.infolist.smtp_provider) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           MX Found: " +
+                _vm._s(_vm.infolist.mx_found) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           MX Record: " +
+                _vm._s(_vm.infolist.mx_record) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           First Name: " +
+                _vm._s(_vm.infolist.firstname) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           Last Name: " +
+                _vm._s(_vm.infolist.lastname) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           Gender: " +
+                _vm._s(_vm.infolist.gender) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           Country: " +
+                _vm._s(_vm.infolist.country) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           Region: " +
+                _vm._s(_vm.infolist.region) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           City: " + _vm._s(_vm.infolist.city) + "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           Zip code: " +
+                _vm._s(_vm.infolist.zipcode) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n           Process Date: " +
+                _vm._s(_vm.infolist.processed_at) +
+                "\n        "
+            )
+          ])
         ])
       : _vm._e()
   ])

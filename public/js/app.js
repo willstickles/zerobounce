@@ -2036,7 +2036,6 @@ __webpack_require__.r(__webpack_exports__);
         this.success = false;
         this.errors = {};
         var apiUrl = 'https://api.zerobounce.net/v2/validate?api_key=' + "a870019d9b8f4297bafd5cec33f859e6";
-        var url = 'https://api.zerobounce.net/v2/validate';
         fetch(apiUrl + '&email=' + encodeURIComponent(this.email) + '&ip_address=').then(function (res) {
           return res.json();
         }).then(function (data) {

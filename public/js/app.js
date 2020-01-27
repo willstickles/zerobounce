@@ -1920,7 +1920,65 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      errors: {},
+      email: '',
+      info: null,
+      loading: false,
+      errored: false,
+      showform: true
+    };
+  },
+  methods: {
+    submit: function submit() {
+      var _this = this;
+
+      // console.log(window.Laravel.csrfToken);
+      this.loading = true;
+      this.showform = false;
+      this.errors = {};
+      var url = 'https://api.zerobounce.net/v2/validate';
+      axios.get(url, {
+        params: {
+          api_key: 'a870019d9b8f4297bafd5cec33f859e6',
+          email: this.email,
+          ip_address: ''
+        },
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest' // 'X-CSRF-TOKEN': window.Laravel.csrfToken
+
+        },
+        withCredentials: true,
+        credentials: 'same-origin'
+      }).then(function (response) {
+        _this.info = response.data;
+        console.log('success');
+        console.log(_this.info);
+      })["catch"](function (error) {
+        console.log(_this.email);
+        console.log('error');
+        console.log(error);
+        _this.errored = true;
+      })["finally"](function () {
+        return _this.loading = false;
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -37294,40 +37352,77 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("form", { attrs: { action: "" } }, [
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-            _vm._v("Email address")
-          ]),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control",
-            attrs: {
-              type: "email",
-              id: "exampleInputEmail1",
-              "aria-describedby": "emailHelp",
-              placeholder: "Enter email to validate"
-            }
-          })
+  return _c("div", [
+    _vm.errored
+      ? _c("section", [
+          _c("p", [
+            _vm._v(
+              "We're sorry, we're not able to retrieve the information at the moment. Please try back later"
+            )
+          ])
+        ])
+      : _c("section", [
+          _vm.loading ? _c("div", [_vm._v("Loading...")]) : _vm._e()
         ]),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-          [_vm._v("Submit")]
-        )
-      ])
-    ])
-  }
-]
+    _vm._v(" "),
+    _vm.showform
+      ? _c("div", [
+          _c(
+            "form",
+            {
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.submit($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                  _vm._v("Email address")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.email,
+                      expression: "email"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "email",
+                    id: "exampleInputEmail1",
+                    "aria-describedby": "emailHelp",
+                    placeholder: "Enter email to validate"
+                  },
+                  domProps: { value: _vm.email },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.email = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+                [_vm._v("Submit")]
+              )
+            ]
+          )
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -49499,7 +49594,7 @@ module.exports = function(module) {
 /***/ (function(module, exports, __webpack_require__) {
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-Vue.component('email_validation-view', __webpack_require__(/*! ./components/EmailValidation */ "./packages/willstickles/laravelneutrino/src/js/components/EmailValidation.vue")["default"]); // let app = new Vue(
+Vue.component('email-validation', __webpack_require__(/*! ./components/EmailValidation */ "./packages/willstickles/laravelneutrino/src/js/components/EmailValidation.vue")["default"]); // let app = new Vue(
 //     el = '#app'
 // );
 

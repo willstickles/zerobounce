@@ -4,6 +4,7 @@ namespace Willstickles\LaravelNeutrino;
 
 use Illuminate\Support\ServiceProvider;
 use Willstickles\LaravelNeutrino\Neutrino;
+use Willstickles\LaravelNeutrino\Extensions\NeutrinoStore;
 
 class NeutrinoServiceProvider extends ServiceProvider
 {

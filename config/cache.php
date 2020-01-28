@@ -85,6 +85,10 @@ return [
             'endpoint' => env('DYNAMODB_ENDPOINT'),
         ],
 
+        // 'neutrino' => [
+        //     'driver' => env('CACHE_DRIVER')
+        // ]
+
     ],
 
     /*

@@ -3,6 +3,7 @@
 namespace Willstickles\LaravelNeutrino\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Facades\Willstickles\LaravelNeutrino\Repository\Neutrino;
 use Illuminate\Support\Facades\Cache;
 
 class NeutrinoController extends Controller
@@ -16,7 +17,8 @@ class NeutrinoController extends Controller
      */
     public function index()
     {
-        $value = $value = Cache::store('file')->get('path');
+        $value = Neutrino::all('email');
+        dd($value);
 
         return view('willstickles\laravelneutrino::neutrino.validate_email');
     }

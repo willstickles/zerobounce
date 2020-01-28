@@ -4,7 +4,10 @@ namespace Willstickles\LaravelNeutrino;
 
 class Neutrino
 {
+
+
     
+
     /**
      * display
      *

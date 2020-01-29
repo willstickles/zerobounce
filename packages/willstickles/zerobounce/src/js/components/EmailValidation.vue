@@ -117,39 +117,6 @@ export default {
         }
     },
     methods: {
-        validateForm: function (e) {
-            if ( this.email ) {
-                // return true;
-                this.loading = true;
-                this.showform = false;
-                this.success = false;
-                this.errors = {};
-
-
-
-                // var apiUrl = 'https://api.zerobounce.net/v2/validate?api_key='+process.env.MIX_ZEROBOUNCE_API_KEY;
-
-                // fetch(apiUrl + '&email=' +  encodeURIComponent(this.email) + '&ip_address=')
-                // .then(res => res.json())
-                // .then( data => 
-                // {
-                //     this.infolist = data;
-                // })
-                // .catch(error => { this.errored = true })
-                // .finally( () => {
-                //     this.loading = false,
-                //     this.success = true
-                // } )                      
-            }
-            this.errors = [];
-
-            if ( !this.email ) { 
-                this.errors.push('Email required');
-            }
-            
-            e.preventDefault();
-        },
-
         submit() {
                 this.loading = true;
                 this.showform = false;

@@ -16,6 +16,11 @@ class ZeroBounceController extends Controller
     protected $api_user_id = '';
     protected $api_key = '';
 
+    /**
+     * __construct
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->api_user_id = config('zerobounce.zerobounce.user_id');
@@ -33,6 +38,13 @@ class ZeroBounceController extends Controller
         return view('willstickles\zerobounce::zerobounce.validate_email');
     }
 
+    /**
+     * Validate an email address with Zerobounce API
+     *
+     * @param  mixed $request
+     *
+     * @return void
+     */
     public function validateEmail(Request $request)
     {
         $this->validate($request, [
@@ -68,7 +80,7 @@ class ZeroBounceController extends Controller
     }
 
     /**
-     * Get credit balance from ZeroBounce
+     * Get credit balance from Zerobounce API
      *
      * @param  mixed $response
      *
@@ -77,7 +89,7 @@ class ZeroBounceController extends Controller
     public function getCreditBalance ()
     {
         $client = new GuzzleClient();
-        $base_url = "https://api.zerobounce.net/v2/getcredits?api_key=";
+        $base_url = "https://api.zerobounce.net/v2/getcredits";
 
         $res = $client->request('GET', $base_url, [
             'query' => [
@@ -89,7 +101,7 @@ class ZeroBounceController extends Controller
     }
 
     /**
-     * Send File to Zero Bounce
+     * Display form to upload file for Zerobounce API
      *
      * @return void
      */
@@ -98,6 +110,13 @@ class ZeroBounceController extends Controller
         return view('willstickles\zerobounce::zerobounce.send_file');
     }
 
+    /**
+     * Upload a file and send it to Zerobounce API
+     *
+     * @param  mixed $request
+     *
+     * @return void
+     */
     public function fileUpload(Request $request)
     {
         $file = Storage::putfile('emailFiles', $request->file('filename'), 'public');
@@ -133,22 +152,73 @@ class ZeroBounceController extends Controller
         ]);
         $response_data = json_decode((string) $res->getBody(), true);
 
-        return response()->json($response_data, 200);
+        return response()->json($response_data->getBody(), 200);
     }
 
+    /**
+     * Get status of a file sent to Zerobounce API
+     *
+     * @param  mixed $file_id
+     *
+     * @return void
+     */
     public function fileStatus($file_id)
     {
-        
+        $client = new GuzzleClient();
+        $base_url = "https://api.zerobounce.net/v2/filestatus";
+
+        $res = $client->request('GET', $base_url, [
+            'query' => [
+                'api_key' => $this->api_key,
+                'file_id' => $file_id
+            ]
+        ]);
+   
+        return $res->getBody();
     }
 
-    public function getFile() 
+    /**
+     * Get file uploaded to Zerobounce API
+     *
+     * @param  mixed $file_id
+     *
+     * @return void
+     */
+    public function getFile($file_id) 
     {
-        //
+        $client = new GuzzleClient();
+        $base_url = "https://api.zerobounce.net/v2/getfile";
+
+        $res = $client->request('GET', $base_url, [
+            'query' => [
+                'api_key' => $this->api_key,
+                'file_id' => $file_id
+            ]
+        ]);
+   
+        return $res->getBody();
     }
 
-    public function deleteFile()
+    /**
+     * Delete file sent to Zerobounce API
+     *
+     * @param  mixed $file_id
+     *
+     * @return void
+     */
+    public function deleteFile($file_id)
     {
-        //
+        $client = new GuzzleClient();
+        $base_url = "https://api.zerobounce.net/v2/deletefile";
+
+        $res = $client->request('GET', $base_url, [
+            'query' => [
+                'api_key' => $this->api_key,
+                'file_id' => $file_id
+            ]
+        ]);
+   
+        return $res->getBody();
     }
     
 }

@@ -45,7 +45,7 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/",
-            "Willstickles\\LaravelNeutrino\\": "packages/willstickles/laravelneutrino/src"
+            "Willstickles\\Zerobounce\\": "packages/willstickles/zerobounce/src"
         }
     },
     "minimum-stability": "dev",

@@ -20,5 +20,5 @@ Auth::routes(['register' => false]);
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('test', function() {
-    return Neutrino::display();
+    return ZeroBounce::display();
 });

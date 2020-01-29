@@ -175,7 +175,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        \Willstickles\LaravelNeutrino\NeutrinoServiceProvider::class,
+        \Willstickles\Zerobounce\ZeroBounceServiceProvider::class,
 
     ],
 
@@ -228,7 +228,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        'Neutrino' => \Willstickles\LaravelNeutrino\Facades\Neutrino::class,
+        'ZeroBounce' => \Willstickles\Zerobounce\Facades\ZeroBounce::class,
 
     ],
 

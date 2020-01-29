@@ -6,7 +6,7 @@
 
 require('./bootstrap');
 
-require('../../packages/willstickles/laravelneutrino/src/js/app');
+require('../../packages/willstickles/zerobounce/src/js/app');
 
 window.Vue = require('vue');
 

@@ -125,7 +125,7 @@ export default {
                 this.success = false;
                 this.errors = {};
 
-                var apiUrl = 'https://api.zerobounce.net/v2/validate?api_key='+process.env.MIX_NEUTRINO_API_KEY;
+                var apiUrl = 'https://api.zerobounce.net/v2/validate?api_key='+process.env.MIX_ZEROBOUNCE_API_KEY;
 
                 fetch(apiUrl + '&email=' +  encodeURIComponent(this.email) + '&ip_address=')
                 .then(res => res.json())

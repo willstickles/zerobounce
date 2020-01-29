@@ -1,12 +1,11 @@
 <?php
 
-namespace Willstickles\LaravelNeutrino;
+namespace Willstickles\Zerobounce;
 
 use Illuminate\Support\ServiceProvider;
-use Willstickles\LaravelNeutrino\Neutrino;
-use Willstickles\LaravelNeutrino\Extensions\NeutrinoStore;
+use Willstickles\Zerobounce\ZeroBounce;
 
-class NeutrinoServiceProvider extends ServiceProvider
+class ZeroBounceServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -15,11 +14,11 @@ class NeutrinoServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('willstickles-neutrino', function() {
-            return new Neutrino();
+        $this->app->bind('willstickles-zerobounce', function() {
+            return new ZeroBounce();
         });
 
-        $this->mergeConfigFrom( __DIR__.'/config/neutrino.php', 'neutrino');
+        $this->mergeConfigFrom( __DIR__.'/config/zerobounce.php', 'zerobounce');
     }
 
     /**
@@ -30,8 +29,8 @@ class NeutrinoServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/config/neutrino.php' => config_path('neutrino.php')
-        ], 'neutrino-config');
+            __DIR__.'/config/zerobounce.php' => config_path('zerobounce.php')
+        ], 'zerobounce-config');
 
         $this->publishes([
             __DIR__.'/js/components' => resource_path('js/components')
@@ -39,10 +38,10 @@ class NeutrinoServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/js/app.js' => resource_path('js')
-        ], 'neutrino-js');
+        ], 'zerobounce-js');
 
         $this->loadRoutesFrom( __DIR__.'/routes/web.php');
-        $this->loadViewsFrom( __DIR__.'/views', 'willstickles\laravelneutrino');
+        $this->loadViewsFrom( __DIR__.'/views', 'willstickles\zerobounce');
 
     }
 }

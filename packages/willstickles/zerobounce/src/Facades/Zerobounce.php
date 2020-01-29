@@ -1,10 +1,10 @@
 <?php
 
-namespace Willstickles\LaravelNeutrino\Facades;
+namespace Willstickles\Zerobounce\Facades;
 
-use Illuminate\SUpport\Facades\Facade;
+use Illuminate\Support\Facades\Facade;
 
-class Neutrino extends Facade
+class ZeroBounce extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -13,6 +13,6 @@ class Neutrino extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'willstickles-neutrino';
+        return 'willstickles-zerobounce';
     }
 }

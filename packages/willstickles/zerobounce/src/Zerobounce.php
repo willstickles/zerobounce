@@ -1,8 +1,8 @@
 <?php
 
-namespace Willstickles\LaravelNeutrino;
+namespace Willstickles\Zerobounce;
 
-class Neutrino
+class ZeroBounce
 {
 
 

@@ -60,7 +60,6 @@
         },
         {
             "name": "barryvdh/laravel-cors",
-            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruitcake/laravel-cors.git",

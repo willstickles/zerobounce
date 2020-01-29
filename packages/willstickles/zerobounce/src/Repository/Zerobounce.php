@@ -6,7 +6,7 @@ use Carbon\Carbon;
 
 class ZeroBounce
 {
-    CONST CACHE_KEY = 'zerobounce';
+    CONST CACHE_KEY = 'ZEROBOUNCE';
 
     /**
      * This is where I would cache a query

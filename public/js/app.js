@@ -2027,24 +2027,23 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     validateForm: function validateForm(e) {
-      var _this = this;
-
       if (this.email) {
         // return true;
         this.loading = true;
         this.showform = false;
         this.success = false;
-        this.errors = {};
-        var apiUrl = 'https://api.zerobounce.net/v2/validate?api_key=' + "a870019d9b8f4297bafd5cec33f859e6";
-        fetch(apiUrl + '&email=' + encodeURIComponent(this.email) + '&ip_address=').then(function (res) {
-          return res.json();
-        }).then(function (data) {
-          _this.infolist = data;
-        })["catch"](function (error) {
-          _this.errored = true;
-        })["finally"](function () {
-          _this.loading = false, _this.success = true;
-        });
+        this.errors = {}; // var apiUrl = 'https://api.zerobounce.net/v2/validate?api_key='+process.env.MIX_ZEROBOUNCE_API_KEY;
+        // fetch(apiUrl + '&email=' +  encodeURIComponent(this.email) + '&ip_address=')
+        // .then(res => res.json())
+        // .then( data => 
+        // {
+        //     this.infolist = data;
+        // })
+        // .catch(error => { this.errored = true })
+        // .finally( () => {
+        //     this.loading = false,
+        //     this.success = true
+        // } )                      
       }
 
       this.errors = [];
@@ -2054,6 +2053,32 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       e.preventDefault();
+    },
+    submit: function submit() {
+      var _this = this;
+
+      this.loading = true;
+      this.showform = false;
+      this.success = false;
+      this.errors = {};
+      var fields = {
+        email: this.email
+      };
+      axios.post('validate_emails', fields).then(function (response) {
+        _this.infolist = response.data;
+        _this.success = true;
+      })["catch"](function (error) {
+        _this.showform = true; // this.errored = true
+
+        console.log("error" + error);
+
+        if (error.response.status === 422) {
+          _this.errors = error.response.data.errors || {};
+          console.log('this error: ' + _this.errors.email);
+        }
+      })["finally"](function () {
+        _this.loading = false;
+      });
     }
   }
 });
@@ -37448,8 +37473,13 @@ var render = function() {
           _c(
             "form",
             {
-              attrs: { action: "/submit", method: "get" },
-              on: { submit: _vm.validateForm }
+              attrs: { method: "get" },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.submit($event)
+                }
+              }
             },
             [
               _c("div", { staticClass: "form-group" }, [
@@ -37484,9 +37514,9 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                this.errors.length
+                this.errors.email
                   ? _c("div", { staticClass: "alert alert-danger" }, [
-                      _vm._v(_vm._s(this.errors))
+                      _vm._v(_vm._s(this.errors.email))
                     ])
                   : _vm._e()
               ]),
@@ -37506,7 +37536,7 @@ var render = function() {
           _c("div", [
             _vm._v(
               "\n            Email Address: " +
-                _vm._s(_vm.infolist.address) +
+                _vm._s(this.infolist.address) +
                 "\n        "
             )
           ]),
@@ -37514,7 +37544,7 @@ var render = function() {
           _c("div", [
             _vm._v(
               "\n           Status: " +
-                _vm._s(_vm.infolist.status) +
+                _vm._s(this.infolist.status) +
                 "\n        "
             )
           ]),
@@ -37522,7 +37552,7 @@ var render = function() {
           _c("div", [
             _vm._v(
               "\n           Sub Status: " +
-                _vm._s(_vm.infolist.sub_status) +
+                _vm._s(this.infolist.sub_status) +
                 "\n        "
             )
           ]),
@@ -37530,7 +37560,7 @@ var render = function() {
           _c("div", [
             _vm._v(
               "\n           Free Email: " +
-                _vm._s(_vm.infolist.free_email) +
+                _vm._s(this.infolist.free_email) +
                 "\n        "
             )
           ]),
@@ -37538,7 +37568,7 @@ var render = function() {
           _c("div", [
             _vm._v(
               "\n           Did You Mean: " +
-                _vm._s(_vm.infolist.did_you_mean) +
+                _vm._s(this.infolist.did_you_mean) +
                 "\n        "
             )
           ]),
@@ -37546,7 +37576,7 @@ var render = function() {
           _c("div", [
             _vm._v(
               "\n           Account Name: " +
-                _vm._s(_vm.infolist.account) +
+                _vm._s(this.infolist.account) +
                 "\n        "
             )
           ]),
@@ -37554,7 +37584,7 @@ var render = function() {
           _c("div", [
             _vm._v(
               "\n           Domain Name: " +
-                _vm._s(_vm.infolist.domain) +
+                _vm._s(this.infolist.domain) +
                 "\n        "
             )
           ]),
@@ -37562,7 +37592,7 @@ var render = function() {
           _c("div", [
             _vm._v(
               "\n           Domain Age: " +
-                _vm._s(_vm.infolist.domain_age_days) +
+                _vm._s(this.infolist.domain_age_days) +
                 "\n        "
             )
           ]),
@@ -37570,7 +37600,7 @@ var render = function() {
           _c("div", [
             _vm._v(
               "\n           SMTP Provider: " +
-                _vm._s(_vm.infolist.smtp_provider) +
+                _vm._s(this.infolist.smtp_provider) +
                 "\n        "
             )
           ]),
@@ -37578,7 +37608,7 @@ var render = function() {
           _c("div", [
             _vm._v(
               "\n           MX Found: " +
-                _vm._s(_vm.infolist.mx_found) +
+                _vm._s(this.infolist.mx_found) +
                 "\n        "
             )
           ]),
@@ -37586,7 +37616,7 @@ var render = function() {
           _c("div", [
             _vm._v(
               "\n           MX Record: " +
-                _vm._s(_vm.infolist.mx_record) +
+                _vm._s(this.infolist.mx_record) +
                 "\n        "
             )
           ]),
@@ -37594,7 +37624,7 @@ var render = function() {
           _c("div", [
             _vm._v(
               "\n           First Name: " +
-                _vm._s(_vm.infolist.firstname) +
+                _vm._s(this.infolist.firstname) +
                 "\n        "
             )
           ]),
@@ -37602,7 +37632,7 @@ var render = function() {
           _c("div", [
             _vm._v(
               "\n           Last Name: " +
-                _vm._s(_vm.infolist.lastname) +
+                _vm._s(this.infolist.lastname) +
                 "\n        "
             )
           ]),
@@ -37610,7 +37640,7 @@ var render = function() {
           _c("div", [
             _vm._v(
               "\n           Gender: " +
-                _vm._s(_vm.infolist.gender) +
+                _vm._s(this.infolist.gender) +
                 "\n        "
             )
           ]),
@@ -37618,7 +37648,7 @@ var render = function() {
           _c("div", [
             _vm._v(
               "\n           Country: " +
-                _vm._s(_vm.infolist.country) +
+                _vm._s(this.infolist.country) +
                 "\n        "
             )
           ]),
@@ -37626,21 +37656,21 @@ var render = function() {
           _c("div", [
             _vm._v(
               "\n           Region: " +
-                _vm._s(_vm.infolist.region) +
+                _vm._s(this.infolist.region) +
                 "\n        "
             )
           ]),
           _vm._v(" "),
           _c("div", [
             _vm._v(
-              "\n           City: " + _vm._s(_vm.infolist.city) + "\n        "
+              "\n           City: " + _vm._s(this.infolist.city) + "\n        "
             )
           ]),
           _vm._v(" "),
           _c("div", [
             _vm._v(
               "\n           Zip code: " +
-                _vm._s(_vm.infolist.zipcode) +
+                _vm._s(this.infolist.zipcode) +
                 "\n        "
             )
           ]),
@@ -37648,7 +37678,7 @@ var render = function() {
           _c("div", [
             _vm._v(
               "\n           Process Date: " +
-                _vm._s(_vm.infolist.processed_at) +
+                _vm._s(this.infolist.processed_at) +
                 "\n        "
             )
           ])

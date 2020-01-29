@@ -9,12 +9,12 @@
         </section>
         
         <div v-if="showform">
-            <form @submit="validateForm" action="/submit" method="get">
+            <form @submit.prevent="submit" method="get">
 
                 <div class="form-group">
                     <label for="inputEmail">Email address</label>
                     <input type="email" v-model="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email to validate">
-                    <div v-if="this.errors.length" class="alert alert-danger">{{ this.errors }}</div>
+                    <div v-if="this.errors.email" class="alert alert-danger">{{ this.errors.email }}</div>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -23,79 +23,79 @@
         <div v-if="success">
 
             <div>
-                Email Address: {{infolist.address}}
+                Email Address: {{this.infolist.address}}
             </div>
 
             <div>
-               Status: {{infolist.status}}
+               Status: {{this.infolist.status}}
             </div>
 
             <div>
-               Sub Status: {{infolist.sub_status}}
+               Sub Status: {{this.infolist.sub_status}}
             </div>
 
             <div>
-               Free Email: {{infolist.free_email}}
+               Free Email: {{this.infolist.free_email}}
             </div>
 
             <div>
-               Did You Mean: {{infolist.did_you_mean}}
+               Did You Mean: {{this.infolist.did_you_mean}}
             </div>
 
             <div>
-               Account Name: {{infolist.account}}
+               Account Name: {{this.infolist.account}}
             </div>
 
             <div>
-               Domain Name: {{infolist.domain}}
+               Domain Name: {{this.infolist.domain}}
             </div>
 
             <div>
-               Domain Age: {{infolist.domain_age_days}}
+               Domain Age: {{this.infolist.domain_age_days}}
             </div>
 
             <div>
-               SMTP Provider: {{infolist.smtp_provider}}
+               SMTP Provider: {{this.infolist.smtp_provider}}
             </div>
 
             <div>
-               MX Found: {{infolist.mx_found}}
+               MX Found: {{this.infolist.mx_found}}
             </div>
 
             <div>
-               MX Record: {{infolist.mx_record}}
+               MX Record: {{this.infolist.mx_record}}
             </div>
 
             <div>
-               First Name: {{infolist.firstname}}
+               First Name: {{this.infolist.firstname}}
             </div>
 
             <div>
-               Last Name: {{infolist.lastname}}
+               Last Name: {{this.infolist.lastname}}
             </div>
 
             <div>
-               Gender: {{infolist.gender}}
+               Gender: {{this.infolist.gender}}
             </div>
 
             <div>
-               Country: {{infolist.country}}
+               Country: {{this.infolist.country}}
             </div>
 
             <div>
-               Region: {{infolist.region}}
+               Region: {{this.infolist.region}}
             </div>
 
             <div>
-               City: {{infolist.city}}
+               City: {{this.infolist.city}}
             </div>
 
             <div>
-               Zip code: {{infolist.zipcode}}
+               Zip code: {{this.infolist.zipcode}}
             </div>
 
             <div>
-               Process Date: {{infolist.processed_at}}
+               Process Date: {{this.infolist.processed_at}}
             </div>
 
         </div>
@@ -125,19 +125,21 @@ export default {
                 this.success = false;
                 this.errors = {};
 
-                var apiUrl = 'https://api.zerobounce.net/v2/validate?api_key='+process.env.MIX_ZEROBOUNCE_API_KEY;
 
-                fetch(apiUrl + '&email=' +  encodeURIComponent(this.email) + '&ip_address=')
-                .then(res => res.json())
-                .then( data => 
-                {
-                    this.infolist = data;
-                })
-                .catch(error => { this.errored = true })
-                .finally( () => {
-                    this.loading = false,
-                    this.success = true
-                } )                      
+
+                // var apiUrl = 'https://api.zerobounce.net/v2/validate?api_key='+process.env.MIX_ZEROBOUNCE_API_KEY;
+
+                // fetch(apiUrl + '&email=' +  encodeURIComponent(this.email) + '&ip_address=')
+                // .then(res => res.json())
+                // .then( data => 
+                // {
+                //     this.infolist = data;
+                // })
+                // .catch(error => { this.errored = true })
+                // .finally( () => {
+                //     this.loading = false,
+                //     this.success = true
+                // } )                      
             }
             this.errors = [];
 
@@ -146,6 +148,36 @@ export default {
             }
             
             e.preventDefault();
+        },
+
+        submit() {
+                this.loading = true;
+                this.showform = false;
+                this.success = false;
+            this.errors = {};
+
+            let fields = {
+                email: this.email
+            }
+
+            axios.post('validate_emails', fields)
+            .then(response => {
+                this.infolist = response.data;
+                this.success = true;
+            })
+            .catch( error => {
+                this.showform = true;
+                // this.errored = true
+                console.log("error" + error);
+                if ( error.response.status === 422) {
+                    this.errors = error.response.data.errors || {};
+                    console.log('this error: ' + this.errors.email);
+                }
+            })
+            .finally( () => {
+                this.loading = false;
+                
+            });
         }
     }
 }

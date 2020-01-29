@@ -6,7 +6,7 @@ Route::group(['namespace' => 'Willstickles\Zerobounce\Http\Controllers', 'middle
     Route::get('validate_email', 'ZeroBounceController@index');
     Route::get('validate_emails', 'ZeroBounceController@validateEmail');
 
-    Route::get('/submit', 'ZeroBounceController@submit');
+    Route::post('validate_emails', 'ZeroBounceController@validateEmail');
 
     Route::get('get_credit_balance', 'ZeroBounceController@getCreditBalance');
     Route::get('delete_file', function() {

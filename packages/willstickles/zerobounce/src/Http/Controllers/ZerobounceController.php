@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Facades\Willstickles\Zerobounce\Repository\ZeroBounce;
 use Illuminate\Support\Facades\Cache;
 use GuzzleHttp\Client;
-use Illuminate\Http\Response;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class ZeroBounceController extends Controller
 {
@@ -28,13 +29,41 @@ class ZeroBounceController extends Controller
      */
     public function index()
     {
-        $email = ZeroBounce::all('email');
-        return view('willstickles\zerobounce::zerobounce.validate_email', compact(['email'=>$email]));
+        return view('willstickles\zerobounce::zerobounce.validate_email');
     }
 
-    public function validateEmail()
+    public function validateEmail(Request $request)
     {
-        echo "HEllo";
+        $this->validate($request, [
+            'email' => 'required|email',
+        ]);
+
+        $ip_address = ($request->ip_address) ? $request->ip_address : '';
+
+        $client = new Client();
+        $url = "https://api.zerobounce.net/v2/validate";
+
+        $res = $client->request('GET', $url, [
+           "query" => [ 
+               'api_key' => $this->api_key,
+               'email' => $request->email,
+               'ip_address' => $ip_address
+               ]
+        ]);
+        $this->response_data = json_decode((string) $res->getBody(), true);
+
+        if ( config('zerobounce.zerobounce.cache.use_cache') ) {
+            $cacheKey = ZeroBounce::getCacheKey('email');
+
+            $expire_days = config('zerobounce.zerobounce.cache.expire');
+
+            return cache()->remember($cacheKey, Carbon::now()->addDays($expire_days), function() {
+                return $this->response_data;
+            });
+        } else {
+            return response()->json($this->response_data, 200);
+        }
+
     }
 
     /**
@@ -47,10 +76,12 @@ class ZeroBounceController extends Controller
     public function getCreditBalance ()
     {
         $client = new Client();
-        $url = "https://api.zerobounce.net/v2/getcredits?api_key=".$this->api_key;
+        $base_url = "https://api.zerobounce.net/v2/getcredits?api_key=";
 
-        $res = $client->request('GET', $url, [
-            'api_key' => $this->api_key
+        $res = $client->request('GET', $base_url, [
+            'query' => [
+                'api_key' => $this->api_key,
+            ]
         ]);
    
         return $res->getBody();

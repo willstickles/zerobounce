@@ -1,0 +1,30 @@
+{
+    "name": "willstickles/zerobounce",
+    "description": "Laravel Package for ZeroBounce API",
+    "require": {
+        "guzzlehttp/guzzle": "^6.5"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Will Stickles",
+            "email": "will.stickles.sensei@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Willstickles\\Zerobounce\\": "packages/willstickles/zerobounce/src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Willstickles\\Zerobounce\\Providers\\ZeroBounceServiceProvider"
+            ],
+            "aliases": {
+                "Zerobounce": "Willstickles\\Zerobounce\\Facades\\ZeroBounce"
+            }
+        }
+    }
+}

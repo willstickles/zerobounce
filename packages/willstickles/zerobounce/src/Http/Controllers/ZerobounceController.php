@@ -5,9 +5,10 @@ namespace Willstickles\Zerobounce\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Facades\Willstickles\Zerobounce\Repository\ZeroBounce;
 use Illuminate\Support\Facades\Cache;
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class ZeroBounceController extends Controller
 {
@@ -40,7 +41,7 @@ class ZeroBounceController extends Controller
 
         $ip_address = ($request->ip_address) ? $request->ip_address : '';
 
-        $client = new Client();
+        $client = new GuzzleClient();
         $url = "https://api.zerobounce.net/v2/validate";
 
         $res = $client->request('GET', $url, [
@@ -75,7 +76,7 @@ class ZeroBounceController extends Controller
      */
     public function getCreditBalance ()
     {
-        $client = new Client();
+        $client = new GuzzleClient();
         $base_url = "https://api.zerobounce.net/v2/getcredits?api_key=";
 
         $res = $client->request('GET', $base_url, [
@@ -99,37 +100,45 @@ class ZeroBounceController extends Controller
 
     public function fileUpload(Request $request)
     {
-        $file = $request->file('filename');
+        $file = Storage::putfile('emailFiles', $request->file('filename'), 'public');
         
-        // dd($file);
-
-        $filename = $file->getRealPath().'.'.$file->getClientOriginalExtension();
+        // $filename = $file->getRealPath().'.'.$file->getClientOriginalExtension();
         // $request->file->move(public_path('files'), $filename);
+        $headers = [
+            'Content-Type' => 'multipart/form-data'
+        ];
 
-        $client = new Client();
+        $client = new GuzzleClient([
+            'headers' => $headers
+        ]);
         $url = "https://bulkapi.zerobounce.net/v2/sendfile";
 
         $res = $client->request('POST', $url, [
             'multipart' => [
                 [
-                    'file' => $filename,
-                    'api_key' => $this->api_key,
-                    'email_address_column' => 1,
-                    'contents' => fopen($filename, 'r')
+                    'name' => 'file',
+                    'contents' => Storage::get($file),
+                    'filename' => $file
+                ],
+                [
+                    'name' => 'api_key',
+                    'contents' => $this->api_key,
+                ],
+                [
+                    'name' => 'email_address_column',
+                    'contents' => 1
                 ]
             ]
+            
         ]);
-            dd($res);
         $response_data = json_decode((string) $res->getBody(), true);
-
-        dd($response_data);
 
         return response()->json($response_data, 200);
     }
 
-    public function fileStatus()
+    public function fileStatus($file_id)
     {
-        //
+        
     }
 
     public function getFile() 

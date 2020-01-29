@@ -94,17 +94,37 @@ class ZeroBounceController extends Controller
      */
     public function sendFile()
     {
-        // $client = new GuzzleHttp\Client();
-        // $url = "https://bulkapi.zerobounce.net/v2/sendfile";
-
-        // $res = $client->get($url, [
-        //     'file' => ''
-        // ]);
-        // echo $res->getStatusCode();
-        // echo $res->getBody();
-
-
         return view('willstickles\zerobounce::zerobounce.send_file');
+    }
+
+    public function fileUpload(Request $request)
+    {
+        $file = $request->file('filename');
+        
+        // dd($file);
+
+        $filename = $file->getRealPath().'.'.$file->getClientOriginalExtension();
+        // $request->file->move(public_path('files'), $filename);
+
+        $client = new Client();
+        $url = "https://bulkapi.zerobounce.net/v2/sendfile";
+
+        $res = $client->request('POST', $url, [
+            'multipart' => [
+                [
+                    'file' => $filename,
+                    'api_key' => $this->api_key,
+                    'email_address_column' => 1,
+                    'contents' => fopen($filename, 'r')
+                ]
+            ]
+        ]);
+            dd($res);
+        $response_data = json_decode((string) $res->getBody(), true);
+
+        dd($response_data);
+
+        return response()->json($response_data, 200);
     }
 
     public function fileStatus()
@@ -122,19 +142,4 @@ class ZeroBounceController extends Controller
         //
     }
     
-    /**
-     * Validate Email Address with Zerobounce API
-     *
-     * @param  mixed $response
-     *
-     * @return void
-     */
-    public function submit(Request $request) 
-    {
-        $this->validate($request, [
-            'email' => 'required|email'
-        ]);
-
-        return response()->json(null, 200);
-    }
 }

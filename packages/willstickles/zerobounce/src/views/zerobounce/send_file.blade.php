@@ -13,7 +13,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    
+                        
+                    <file-upload></file-upload>
+
                 </div>
             </div>
         </div>

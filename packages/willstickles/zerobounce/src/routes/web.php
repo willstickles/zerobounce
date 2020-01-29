@@ -13,5 +13,7 @@ Route::group(['namespace' => 'Willstickles\Zerobounce\Http\Controllers', 'middle
         return 'Delete File';
     });
     Route::get('send_file', 'ZeroBounceController@sendFile');
+
+    Route::post('uploadfile', 'ZeroBounceController@fileUpload');
 });
 

@@ -4,7 +4,6 @@ namespace Willstickles\Zerobounce\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Facades\Willstickles\Zerobounce\Repository\ZeroBounce;
-use Illuminate\Support\Facades\Cache;
 use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;

@@ -56,10 +56,12 @@ class ZeroBounceController extends Controller
         $client = new GuzzleClient();
         $url = "https://api.zerobounce.net/v2/validate";
 
+        $email = trim( strtolower($request->email) );
+
         $res = $client->request('GET', $url, [
            "query" => [ 
                'api_key' => $this->api_key,
-               'email' => $request->email,
+               'email' => $email, 
                'ip_address' => $ip_address
                ]
         ]);
